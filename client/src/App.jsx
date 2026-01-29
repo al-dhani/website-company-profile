@@ -20,7 +20,6 @@ export default function App() {
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/produk" element={<Produk />} />
               <Route path="/artikel" element={<Artikel />} />
               <Route path="/event" element={<Event />} />
             </Routes>
