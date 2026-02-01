@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import produkRoutes from "./routes/produkRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
-import artikelRoutes from "./routes/eventRoutes.js";
+import artikelRoutes from "./routes/artikelRoutes.js";
 import partnersRoutes from "./routes/partnersRoutes.js";
 import galeriRoutes from "./routes/galeriRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
