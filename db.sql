@@ -69,11 +69,3 @@ CREATE TABLE users (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `testimonials` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nama` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `pesan` text COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `rating` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-

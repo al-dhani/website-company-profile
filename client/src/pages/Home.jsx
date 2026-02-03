@@ -163,11 +163,11 @@ export default function Home() {
 
       {/* Main Heading - Super Bold */}
       <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-none mb-8 text-white animate-slide-up">
-        Mie Gacoan
+        GaComp
         <br />
         <span className="relative inline-block mt-2">
           <span className="bg-gradient-to-r from-[#EC008C] via-[#FF1493] to-[#00B4D8] bg-clip-text text-transparent animate-gradient">
-            Pedasnya Juara!
+            Mie Pedas No.1 di Indonesia
           </span>
           {/* Underline Animation */}
           <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 400 12" fill="none">
@@ -991,92 +991,120 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PARTNERS */}
-      <section id="partners" className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <span className="inline-block bg-[#00B4D8]/10 text-[#00B4D8] px-6 py-2 rounded-full font-semibold mb-4">
-              Partner Kami
-            </span>
-            <h2 className="text-5xl md:text-6xl font-black text-gray-900">
-              Dipercaya Oleh <span className="text-[#00B4D8]">Brand Ternama</span>
-            </h2>
-          </div>
+{/* PARTNERS */}
+<section
+  id="partners"
+  className="relative py-32 overflow-hidden bg-[#0A0A0A]"
+>
+  {/* ===== GRADIENT BACKGROUND ===== */}
+  <div className="absolute inset-0">
+    <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#EC008C]/40 rounded-full blur-[140px]" />
+    <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/40 rounded-full blur-[140px]" />
+  </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {partners.map(partner => (
+  {/* ===== GRID PATTERN ===== */}
+  <div
+    className="absolute inset-0 opacity-[0.04]"
+    style={{
+      backgroundImage: `
+        linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)
+      `,
+      backgroundSize: "48px 48px",
+    }}
+  />
+
+  <div className="relative container mx-auto px-6 max-w-7xl">
+    {/* ===== HEADER ===== */}
+    <div className="mb-24">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="h-px w-14 bg-gradient-to-r from-[#EC008C] to-transparent" />
+        <span className="text-white/60 text-sm tracking-widest uppercase">
+          Adit Ngocok
+        </span>
+      </div>
+
+      <h2 className="text-6xl md:text-8xl font-black text-white leading-none">
+        Our <br />
+        <span className="bg-gradient-to-r from-[#EC008C] via-pink-500 to-purple-500 bg-clip-text text-transparent">
+          Partners
+        </span>
+      </h2>
+    </div>
+
+    {/* ===== BENTO GRID ===== */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[200px]">
+      {partners.map((partner, idx) => {
+        const isBig = idx === 0;
+
+        return (
+          <div
+            key={partner.id}
+            className={`
+              group relative overflow-hidden rounded-3xl
+              ${isBig ? "md:col-span-2 md:row-span-2" : ""}
+            `}
+          >
+            {/* CARD */}
+            <div
+              className="
+                relative h-full bg-white/5 backdrop-blur-md
+                border border-white/15 rounded-3xl
+                p-8 flex flex-col items-center justify-center
+                transition-all duration-500
+                hover:bg-white/10 hover:border-white/30
+              "
+            >
+              {/* GLOW */}
               <div
-                key={partner.id}
-                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl 
-                  transition-all duration-300 hover:-translate-y-2 border border-gray-100"
-              >
-                <div className="h-24 flex items-center justify-center mb-4">
-                  <img
-                    src={partner.logo}
-                    alt={partner.nama}
-                    className="max-h-20 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                  />
-                </div>
-                <p className="font-bold text-center text-gray-800 group-hover:text-[#00B4D8] transition-colors">
-                  {partner.nama}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+                className="
+                  absolute inset-0 rounded-3xl
+                  bg-gradient-to-br from-[#EC008C]/25 to-purple-500/25
+                  opacity-0 group-hover:opacity-100
+                  blur-xl transition-opacity duration-500
+                "
+              />
 
-      {/* TESTIMONIAL */}
-      <section className="py-24 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black mb-6">
-              Apa Kata <span className="text-[#EC008C]">Pelanggan</span>
-            </h2>
-            <p className="text-xl text-gray-300">
-              Ribuan pelanggan puas dengan pelayanan dan rasa kami
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                name: "Andi Setiawan",
-                avatar: "👨‍💼",
-                rating: 5,
-                text: "Mie Gacoan adalah tempat favorit saya! Harga terjangkau, rasa enak, dan pelayanannya cepat. Level 7 adalah pilihan terbaik!"
-              },
-              {
-                name: "Sinta Dewi",
-                avatar: "👩",
-                rating: 5,
-                text: "Outlet nya nyaman banget, cocok buat nongkrong sama teman. Dimsum nya juga enak, jadi selalu pesan paket komplit!"
-              }
-            ].map((testimonial, idx) => (
+              {/* LOGO */}
               <div
-                key={idx}
-                className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 
-                  hover:bg-white/20 transition-all duration-300"
+                className={`
+                  relative z-10 flex items-center justify-center w-full flex-1
+                  ${isBig ? "py-6" : ""}
+                `}
               >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="text-5xl">{testimonial.avatar}</div>
-                  <div>
-                    <h4 className="font-black text-xl">{testimonial.name}</h4>
-                    <div className="flex gap-1 mt-1">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <span key={i} className="text-yellow-400 text-lg">⭐</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <p className="text-gray-200 italic leading-relaxed text-lg">
-                  "{testimonial.text}"
-                </p>
+                <img
+                  src={partner.logo}
+                  alt={partner.nama}
+                  className={`
+                    object-contain transition-all duration-500
+                    opacity-70 group-hover:opacity-100 group-hover:scale-110
+                    ${isBig
+                      ? "max-h-52 md:max-h-60 lg:max-h-64"
+                      : "max-h-32"}
+                  `}
+                />
               </div>
-            ))}
+
+              {/* NAME */}
+              <p
+                className="
+                  relative z-10 mt-4 text-white/80 font-semibold text-center
+                  group-hover:text-white transition-colors
+                "
+              >
+                {partner.nama}
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+
+  
+
 
       {/* EVENT - PORTRAIT CARDS */}
       <section id="event" className="py-24 bg-white">
