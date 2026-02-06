@@ -12,8 +12,6 @@ import {
   FaComments,
 } from "react-icons/fa";
 
-
-
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -21,8 +19,6 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [telp, setTelp] = useState("");
   const [pesan, setPesan] = useState("");
-
-
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -772,19 +768,25 @@ export default function Home() {
             {menuFavorites.map((menu, index) => (
               <div
                 key={index}
-                className="group bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 
-                  hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 cursor-pointer"
+                className="group bg-white/10 backdrop-blur-md rounded-3xl p-5 
+      border border-white/20 hover:bg-white/20 hover:-translate-y-2 
+      transition-all duration-300 cursor-pointer"
               >
-                <div className="bg-white rounded-2xl p-4 mb-4 h-32 flex items-center justify-center 
-                  group-hover:scale-110 transition-transform">
+                {/* Image Wrapper */}
+                <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-white">
                   <img
                     src={menu.image}
                     alt={menu.name}
-                    className="max-h-24 object-contain"
+                    className="w-full h-full object-cover 
+          group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
+
+                {/* Text */}
                 <h4 className="font-black text-xl mb-2">{menu.name}</h4>
-                <p className="text-gray-300 text-sm">{menu.description}</p>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {menu.description}
+                </p>
               </div>
             ))}
           </div>
@@ -843,7 +845,7 @@ export default function Home() {
                     <button
                       onClick={() => handlePayment(product)}
                       className="bg-gradient-to-r from-[#EC008C] to-[#C4007A] text-white px-6 py-3 
-    rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300"
+                      rounded-full font-bold hover:shadow-lg hover:scale-105 transition-all duration-300"
                     >
                       Order
                     </button>
@@ -1130,10 +1132,6 @@ export default function Home() {
         </div>
       </section>
 
-
-
-
-
       {/* EVENT - PORTRAIT CARDS */}
       <section id="event" className="py-24 bg-white">
         <div className="container mx-auto px-4">
@@ -1240,17 +1238,17 @@ export default function Home() {
               </h2>
             </div>
             <button
-  onClick={() => {
-    setShowAll(!showAll);
-    document
-      .getElementById("artikel")
-      ?.scrollIntoView({ behavior: "smooth" });
-  }}
-  className="bg-[#00B4D8] text-white px-8 py-3 rounded-full font-bold 
+              onClick={() => {
+                setShowAll(!showAll);
+                document
+                  .getElementById("artikel")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="bg-[#00B4D8] text-white px-8 py-3 rounded-full font-bold 
   hover:bg-[#0096B8] transition-all duration-300 hover:scale-105 shadow-lg"
->
-  {showAll ? "← Balik" : "View All →"}
-</button>
+            >
+              {showAll ? "← Balik" : "View All →"}
+            </button>
 
 
           </div>
@@ -1310,8 +1308,29 @@ export default function Home() {
       </section>
 
       {/* KONTAK */}
-      <section id="contact" className="py-24 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div className="container mx-auto px-4">
+      <section
+        id="contact"
+        className="relative py-32 overflow-hidden bg-[#0A0A0A] text-white"
+      >
+        {/* ===== GRADIENT BACKGROUND ===== */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#EC008C]/40 rounded-full blur-[140px]" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/40 rounded-full blur-[140px]" />
+        </div>
+
+        {/* ===== GRID PATTERN ===== */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `
+        linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)
+      `,
+            backgroundSize: "48px 48px",
+          }}
+        />
+
+        <div className="relative z-10 container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-black mb-6">
               Hubungi <span className="text-[#EC008C]">Kami</span>
@@ -1360,7 +1379,7 @@ export default function Home() {
                 <div key={idx} className="flex gap-4">
                   <div
                     className={`flex-shrink-0 w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl 
-        flex items-center justify-center text-2xl shadow-lg`}
+              flex items-center justify-center text-2xl shadow-lg`}
                   >
                     {item.icon}
                   </div>
@@ -1376,9 +1395,8 @@ export default function Home() {
               ))}
             </div>
 
-
             {/* Contact Form */}
-            <div className="bg-white text-gray-900 rounded-3xl p-8 shadow-2xl">
+            <div className="bg-white/95 backdrop-blur-md text-gray-900 rounded-3xl p-8 shadow-2xl">
               <h3 className="text-3xl font-black mb-6">Kirim Pesan</h3>
               <form
                 className="space-y-4"
@@ -1387,26 +1405,24 @@ export default function Home() {
 
                   emailjs
                     .send(
-                      "service_0rrmmus",       // ganti sesuai SERVICE ID lu
-                      "template_o1ukrvf",      // ganti sesuai TEMPLATE ID lu
+                      "service_0rrmmus",
+                      "template_o1ukrvf",
                       {
                         from_name: nama,
                         from_email: email,
                         message: pesan,
                       },
-                      "8E8MfU1BGE2NrKGcH"      // PUBLIC KEY
+                      "8E8MfU1BGE2NrKGcH"
                     )
                     .then(
-                      (result) => {
-                        console.log(result.text);
+                      () => {
                         alert("Pesan berhasil dikirim");
                         setNama("");
                         setEmail("");
                         setTelp("");
                         setPesan("");
                       },
-                      (error) => {
-                        console.log(error.text);
+                      () => {
                         alert("Gagal mengirim pesan");
                       }
                     );
@@ -1418,8 +1434,7 @@ export default function Home() {
                   value={nama}
                   onChange={(e) => setNama(e.target.value)}
                   className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
-          focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
-          transition-all"
+            focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent transition-all"
                   required
                 />
 
@@ -1429,8 +1444,7 @@ export default function Home() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
-          focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
-          transition-all"
+            focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent transition-all"
                   required
                 />
 
@@ -1440,16 +1454,16 @@ export default function Home() {
                   value={pesan}
                   onChange={(e) => setPesan(e.target.value)}
                   className="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl 
-          focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
-          transition-all resize-none"
+            focus:outline-none focus:ring-2 focus:ring-[#EC008C] focus:border-transparent 
+            transition-all resize-none"
                   required
                 ></textarea>
 
                 <button
                   type="submit"
                   className="w-full bg-gradient-to-r from-[#EC008C] to-[#00B4D8] text-white 
-          py-4 rounded-2xl font-black text-lg hover:shadow-2xl hover:scale-105 
-          transition-all duration-300"
+            py-4 rounded-2xl font-black text-lg hover:shadow-2xl hover:scale-105 
+            transition-all duration-300"
                 >
                   Kirim Pesan →
                 </button>
