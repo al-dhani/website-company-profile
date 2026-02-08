@@ -13,8 +13,7 @@ router.get("/", getAllArtikel);
 
 // ⬇⬇ INI WAJIB
 router.post("/", upload.single("thumbnail"), createArtikel);
-
-router.put("/:id", updateArtikel);
+router.put("/:id", upload.single("thumbnail"), updateArtikel);
 router.delete("/:id", deleteArtikel);
 
 export default router;

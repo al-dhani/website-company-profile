@@ -23,16 +23,16 @@ export const getAllArtikel = (req, res) => {
 export const createArtikel = (req, res) => {
   const { judul, slug, isi, penulis } = req.body;
 
-const thumbnail = req.file ? req.file.filename : null;
+  const thumbnail = req.file ? req.file.filename : null;
 
-// lalu simpen ke DB
-thumbnail: thumbnail
+  // lalu simpen ke DB
+  thumbnail: thumbnail
 
   if (!judul || !isi) {
     return res.status(400).json({
       message: "Judul dan isi wajib diisi",
     });
-  } 
+  }
 
   const sql = `
     INSERT INTO articles (judul, slug, isi, thumbnail, penulis)
@@ -63,34 +63,35 @@ thumbnail: thumbnail
 ===================== */
 export const updateArtikel = (req, res) => {
   const { id } = req.params;
-  const { judul, slug, isi, thumbnail, penulis } = req.body;
+  const { judul, penulis, isi } = req.body;
+
+  // kalau upload gambar baru → pakai yang baru
+  // kalau enggak → jangan sentuh thumbnail
+  let thumbnailQuery = "";
+  let params = [judul, penulis, isi];
+
+  if (req.file) {
+    thumbnailQuery = ", thumbnail = ?";
+    params.push(req.file.filename);
+  }
+
+  params.push(id);
 
   const sql = `
-    UPDATE articles 
-    SET judul=?, slug=?, isi=?, thumbnail=?, penulis=? 
-    WHERE id=?
+    UPDATE artikel
+    SET judul = ?, penulis = ?, isi = ?
+    ${thumbnailQuery}
+    WHERE id = ?
   `;
 
-  db.query(
-    sql,
-    [judul, slug, isi, thumbnail, penulis, id],
-    (err, result) => {
-      if (err) {
-        console.error("ERROR DB:", err);
-        return res.status(500).json({
-          message: "Gagal update artikel",
-        });
-      }
-
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          message: "Artikel tidak ditemukan",
-        });
-      }
-
-      res.json({ message: "Artikel berhasil diupdate" });
+  db.query(sql, params, (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Gagal update artikel" });
     }
-  );
+
+    res.json({ message: "Artikel berhasil diupdate" });
+  });
 };
 
 /* =====================

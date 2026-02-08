@@ -200,7 +200,16 @@ const EventAdmin = () => {
                           onClick={() => {
                             setIsEdit(true);
                             setEditId(item.id);
-                            setForm(item);
+                            setForm({
+                              judul: item.judul || "",
+                              tanggal: item.tanggal
+                                ? item.tanggal.split("T")[0] // 🔥 FIX DATE
+                                : "",
+                              lokasi: item.lokasi || "",
+                              gambar: item.gambar || "",
+                              deskripsi: item.deskripsi || "",
+                              link: item.link || "", // 🔥 INI PENTING
+                            });
 
                             // 🔥 PREVIEW DARI SERVER
                             setPreview(

@@ -798,7 +798,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <span className="inline-block bg-[#EC008C]/10 text-[#EC008C] px-6 py-2 rounded-full font-semibold mb-4">
-              Menu Unggulan
+              Products
             </span>
             <h2 className="text-5xl md:text-6xl font-black text-gray-900 mb-6">
               Produk <span className="text-[#EC008C]">Kami</span>
@@ -819,7 +819,7 @@ export default function Home() {
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden bg-gray-100">
                   <img
-                    src={product.image}
+                    src={`http://localhost:5000/images/produk/${product.image}`}
                     alt={product.nama_produk}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
@@ -962,7 +962,7 @@ export default function Home() {
                   `}
                 >
                   <img
-                    src={item.file_gambar}
+                    src={`http://localhost:5000/images/galeri/${item.file_gambar}`}
                     alt={item.judul}
                     className={`w-full object-cover group-hover:scale-110 transition-transform duration-500
                       ${isLarge ? 'h-full min-h-[500px]' : isTall ? 'h-full min-h-[400px]' : 'h-64'}
@@ -1103,7 +1103,7 @@ export default function Home() {
                 `}
                     >
                       <img
-                        src={partner.logo}
+                        src={`http://localhost:5000/images/partners/${partner.logo}`}
                         alt={partner.nama}
                         className={`
                     object-contain transition-all duration-500
@@ -1158,7 +1158,7 @@ export default function Home() {
                 <div className="relative h-80 overflow-hidden bg-gray-100">
                   {event.gambar ? (
                     <img
-                      src={event.gambar}
+                      src={`http://localhost:5000/images/event/${event.gambar}`}
                       alt={event.judul}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -1263,7 +1263,7 @@ export default function Home() {
                 {/* THUMBNAIL */}
                 <div className="h-56 overflow-hidden">
                   <img
-                    src={article.thumbnail}
+                    src={`http://localhost:5000/images/artikel/${article.thumbnail}`}
                     alt={article.judul}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />

@@ -21,7 +21,7 @@ export const getAllEvent = (req, res) => {
    CREATE EVENT
 ===================== */
 export const createEvent = (req, res) => {
-  const { judul, tanggal, lokasi, deskripsi } = req.body;
+  const { judul, tanggal, lokasi, deskripsi, link } = req.body;
   const gambar = req.file ? req.file.filename : null;
 
   if (!judul || !tanggal || !lokasi) {
@@ -31,13 +31,13 @@ export const createEvent = (req, res) => {
   }
 
   const sql = `
-    INSERT INTO events (judul, tanggal, lokasi, gambar, deskripsi)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO events (judul, tanggal, lokasi, gambar, deskripsi, link)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
     sql,
-    [judul, tanggal, lokasi, gambar, deskripsi],
+    [judul, tanggal, lokasi, gambar, deskripsi, link],
     (err, result) => {
       if (err) {
         console.error("ERROR DB:", err);
@@ -59,25 +59,25 @@ export const createEvent = (req, res) => {
 ===================== */
 export const updateEvent = (req, res) => {
   const { id } = req.params;
-  const { judul, tanggal, lokasi, deskripsi } = req.body;
+  const { judul, tanggal, lokasi, deskripsi, link } = req.body;
 
   const gambarBaru = req.file ? req.file.filename : null;
 
   const sql = gambarBaru
     ? `
       UPDATE events
-      SET judul=?, tanggal=?, lokasi=?, gambar=?, deskripsi=?
+      SET judul=?, tanggal=?, lokasi=?, gambar=?, deskripsi=?, link=?
       WHERE id=?
     `
     : `
       UPDATE events
-      SET judul=?, tanggal=?, lokasi=?, deskripsi=?
+      SET judul=?, tanggal=?, lokasi=?, deskripsi=?, link=?
       WHERE id=?
     `;
 
   const values = gambarBaru
-    ? [judul, tanggal, lokasi, gambarBaru, deskripsi, id]
-    : [judul, tanggal, lokasi, deskripsi, id];
+    ? [judul, tanggal, lokasi, gambarBaru, deskripsi, link, id]
+    : [judul, tanggal, lokasi, deskripsi, link, id];
 
   db.query(sql, values, (err, result) => {
     if (err) {

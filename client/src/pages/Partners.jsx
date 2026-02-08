@@ -44,6 +44,7 @@ const Partners = () => {
 
     const formData = new FormData();
     formData.append("nama", form.nama);
+    formData.append("logo", form.logo);
     if (logoFile) {
       formData.append("logo", logoFile);
     }

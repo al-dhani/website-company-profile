@@ -55,31 +55,32 @@ const ProdukAdmin = () => {
 
   /* ===================== SUBMIT ===================== */
   const handleSubmit = async () => {
-  try {
-    const url = isEdit
-      ? `http://localhost:5000/api/produk/${editId}`
-      : "http://localhost:5000/api/produk";
-    const method = isEdit ? "PUT" : "POST";
+    try {
+      const url = isEdit
+        ? `http://localhost:5000/api/produk/${editId}`
+        : "http://localhost:5000/api/produk";
+      const method = isEdit ? "PUT" : "POST";
 
-    const formData = new FormData();
-    formData.append("nama_produk", form.nama_produk);
-    formData.append("tipe", form.tipe);
-    formData.append("harga", form.harga);
-    if (imageFile) formData.append("image", imageFile);
+      const formData = new FormData();
+      formData.append("nama_produk", form.nama_produk);
+      formData.append("tipe", form.tipe);
+      formData.append("harga", form.harga);
+      formData.append("image", form.image);
+      if (imageFile) formData.append("image", imageFile);
 
-    await fetch(url, { method, body: formData });
+      await fetch(url, { method, body: formData });
 
-    setShowModal(false);
-    setIsEdit(false);
-    setEditId(null);
-    setImageFile(null);
-    setPreview(null);
-    setForm({ nama_produk: "", tipe: "", harga: "", image: "" });
-    fetchProduk();
-  } catch (err) {
-    console.error(err);
-  }
-};
+      setShowModal(false);
+      setIsEdit(false);
+      setEditId(null);
+      setImageFile(null);
+      setPreview(null);
+      setForm({ nama_produk: "", tipe: "", harga: "", image: "" });
+      fetchProduk();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   /* ===================== HELPERS ===================== */
   const getTipeBadgeColor = (tipe) => {
@@ -210,7 +211,7 @@ const ProdukAdmin = () => {
                       <td className="p-4">
                         <img
                           src={`http://localhost:5000/images/produk/${item.image}`}
-                            alt={item.nama_produk}
+                          alt={item.nama_produk}
                           className="w-20 h-20 object-cover rounded-xl shadow-md"
                         />
                       </td>
@@ -312,26 +313,26 @@ const ProdukAdmin = () => {
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Gambar Produk</label>
-  <input
-    type="file"
-    accept="image/*"
-    className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#EC008C] focus:ring-2 focus:ring-[#EC008C]/20 outline-none transition-all"
-    onChange={(e) => {
-      const file = e.target.files[0];
-      setImageFile(file);
-      setPreview(URL.createObjectURL(file));
-    }}
-  />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#EC008C] focus:ring-2 focus:ring-[#EC008C]/20 outline-none transition-all"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    setImageFile(file);
+                    setPreview(URL.createObjectURL(file));
+                  }}
+                />
               </div>
 
               {preview && (
-    <div className="mt-4">
-      <p className="text-sm font-bold text-gray-700 mb-2">Preview Gambar:</p>
-      <div className="w-full h-48 rounded-xl overflow-hidden shadow border border-gray-200 flex items-center justify-center bg-gray-50">
-        <img src={preview} alt="Preview Produk" className="w-full h-full object-cover" />
-      </div>
-    </div>
-  )}
+                <div className="mt-4">
+                  <p className="text-sm font-bold text-gray-700 mb-2">Preview Gambar:</p>
+                  <div className="w-full h-48 rounded-xl overflow-hidden shadow border border-gray-200 flex items-center justify-center bg-gray-50">
+                    <img src={preview} alt="Preview Produk" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+              )}
 
               {form.harga && (
                 <div className="bg-green-50 rounded-xl p-4 border border-green-200">

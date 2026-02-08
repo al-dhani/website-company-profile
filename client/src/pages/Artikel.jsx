@@ -69,6 +69,7 @@ const Artikel = () => {
     data.append("slug", form.slug);
     data.append("isi", form.isi);
     data.append("penulis", form.penulis);
+    data.append("thumbnail", form.thumbnail);
 
     if (thumbnailFile) {
       data.append("thumbnail", thumbnailFile);
