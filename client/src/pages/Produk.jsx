@@ -11,6 +11,8 @@ const ProdukAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [form, setForm] = useState({
     nama_produk: "",
     tipe: "",
@@ -53,26 +55,31 @@ const ProdukAdmin = () => {
 
   /* ===================== SUBMIT ===================== */
   const handleSubmit = async () => {
-    try {
-      const url = isEdit
-        ? `http://localhost:5000/api/produk/${editId}`
-        : "http://localhost:5000/api/produk";
-      const method = isEdit ? "PUT" : "POST";
+  try {
+    const url = isEdit
+      ? `http://localhost:5000/api/produk/${editId}`
+      : "http://localhost:5000/api/produk";
+    const method = isEdit ? "PUT" : "POST";
 
-      await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+    const formData = new FormData();
+    formData.append("nama_produk", form.nama_produk);
+    formData.append("tipe", form.tipe);
+    formData.append("harga", form.harga);
+    if (imageFile) formData.append("image", imageFile);
 
-      setShowModal(false);
-      setForm({ nama_produk: "", tipe: "", harga: "", image: "" });
-      setIsEdit(false);
-      fetchProduk();
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    await fetch(url, { method, body: formData });
+
+    setShowModal(false);
+    setIsEdit(false);
+    setEditId(null);
+    setImageFile(null);
+    setPreview(null);
+    setForm({ nama_produk: "", tipe: "", harga: "", image: "" });
+    fetchProduk();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   /* ===================== HELPERS ===================== */
   const getTipeBadgeColor = (tipe) => {
@@ -202,8 +209,8 @@ const ProdukAdmin = () => {
                     <tr key={item.id} className="border-t border-gray-100 hover:bg-gradient-to-r hover:from-[#EC008C]/5 hover:to-[#00BCD4]/5 transition-all duration-300">
                       <td className="p-4">
                         <img
-                          src={item.image || "/images/no-image.png"}
-                          alt={item.nama_produk}
+                          src={`http://localhost:5000/images/produk/${item.image}`}
+                            alt={item.nama_produk}
                           className="w-20 h-20 object-cover rounded-xl shadow-md"
                         />
                       </td>
@@ -221,6 +228,7 @@ const ProdukAdmin = () => {
                             setIsEdit(true);
                             setEditId(item.id);
                             setForm(item);
+                            setPreview(item.image ? `http://localhost:5000/images/produk/${item.image}` : null);
                             setShowModal(true);
                           }}
                           className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-semibold flex items-center gap-1 shadow-md hover:shadow-lg hover:scale-105"
@@ -303,27 +311,27 @@ const ProdukAdmin = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Path Gambar</label>
-                <input
-                  type="text"
-                  className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#EC008C] focus:ring-2 focus:ring-[#EC008C]/20 outline-none transition-all"
-                  placeholder="/images/produk/nama-gambar.png"
-                  value={form.image}
-                  onChange={(e) => setForm({ ...form, image: e.target.value })}
-                />
+                <label className="block text-sm font-bold text-gray-700 mb-2">Gambar Produk</label>
+  <input
+    type="file"
+    accept="image/*"
+    className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#EC008C] focus:ring-2 focus:ring-[#EC008C]/20 outline-none transition-all"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      setImageFile(file);
+      setPreview(URL.createObjectURL(file));
+    }}
+  />
               </div>
 
-              {form.image && (
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                  <p className="text-sm font-bold text-gray-700 mb-3">Preview Gambar:</p>
-                  <img
-                    src={form.image}
-                    alt="Preview"
-                    className="w-full h-48 object-cover rounded-xl"
-                    onError={(e) => (e.target.src = "https://via.placeholder.com/400x200?text=Invalid+Path")}
-                  />
-                </div>
-              )}
+              {preview && (
+    <div className="mt-4">
+      <p className="text-sm font-bold text-gray-700 mb-2">Preview Gambar:</p>
+      <div className="w-full h-48 rounded-xl overflow-hidden shadow border border-gray-200 flex items-center justify-center bg-gray-50">
+        <img src={preview} alt="Preview Produk" className="w-full h-full object-cover" />
+      </div>
+    </div>
+  )}
 
               {form.harga && (
                 <div className="bg-green-50 rounded-xl p-4 border border-green-200">

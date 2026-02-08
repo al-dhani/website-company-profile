@@ -5,17 +5,18 @@ import {
   updateProduk,
   deleteProduk,
 } from "../controllers/produkController.js";
+import upload from "../middlewares/upload.js"; // 🔥 multer
 
 const router = express.Router();
 
 // READ
 router.get("/", getAllProduk);
 
-// CREATE
-router.post("/", createProduk);
+// CREATE (pakai upload.single)
+router.post("/", upload.single("image"), createProduk);
 
-// UPDATE
-router.put("/:id", updateProduk);
+// UPDATE (pakai upload.single)
+router.put("/:id", upload.single("image"), updateProduk);
 
 // DELETE
 router.delete("/:id", deleteProduk);

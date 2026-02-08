@@ -4,7 +4,7 @@ import db from "../db/connection.js";
    GET ALL GALERI
 ===================== */
 export const getAllGaleri = (req, res) => {
-  const sql = "SELECT * FROM gallery";
+  const sql = "SELECT * FROM gallery ORDER BY id DESC"; // mirip partners
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -21,7 +21,8 @@ export const getAllGaleri = (req, res) => {
    CREATE GALERI
 ===================== */
 export const createGaleri = (req, res) => {
-  const { judul, deskripsi, file_gambar } = req.body;
+  const { judul, deskripsi } = req.body;
+  const file_gambar = req.file ? req.file.filename : null; // ambil file upload
 
   if (!judul || !file_gambar) {
     return res.status(400).json({
@@ -29,8 +30,7 @@ export const createGaleri = (req, res) => {
     });
   }
 
-  const sql =
-    "INSERT INTO gallery (judul, deskripsi, file_gambar) VALUES (?, ?, ?)";
+  const sql = "INSERT INTO gallery (judul, deskripsi, file_gambar) VALUES (?, ?, ?)";
 
   db.query(sql, [judul, deskripsi, file_gambar], (err, result) => {
     if (err) {
@@ -52,10 +52,10 @@ export const createGaleri = (req, res) => {
 ===================== */
 export const updateGaleri = (req, res) => {
   const { id } = req.params;
-  const { judul, deskripsi, file_gambar } = req.body;
+  const { judul, deskripsi } = req.body;
+  const file_gambar = req.file ? req.file.filename : req.body.file_gambar; // pakai file baru jika ada, kalau tidak pakai yang lama
 
-  const sql =
-    "UPDATE gallery SET judul=?, deskripsi=?, file_gambar=? WHERE id=?";
+  const sql = "UPDATE gallery SET judul=?, deskripsi=?, file_gambar=? WHERE id=?";
 
   db.query(sql, [judul, deskripsi, file_gambar, id], (err, result) => {
     if (err) {

@@ -350,15 +350,15 @@ const Artikel = () => {
                   />
 
                   {preview && (
-  <div className="mt-4">
-    <p className="text-sm font-bold text-gray-700 mb-2">Preview Gambar</p>
-    <img
-      src={preview}
-      className="w-full h-64 object-cover rounded-xl shadow"
-      alt="Preview Gambar"
-    />
-  </div>
-)}
+                    <div className="mt-4">
+                      <p className="text-sm font-bold text-gray-700 mb-2">Preview Gambar</p>
+                      <img
+                        src={preview}
+                        className="w-full h-64 object-cover rounded-xl shadow"
+                        alt="Preview Gambar"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Penulis */}

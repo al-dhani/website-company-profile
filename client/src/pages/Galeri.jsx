@@ -11,6 +11,8 @@ const Galeri = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [fileGambar, setFileGambar] = useState(null); // menyimpan file gambar
+  const [preview, setPreview] = useState(null);       // untuk preview gambar sebelum submit
 
   const [form, setForm] = useState({
     judul: "",
@@ -53,23 +55,32 @@ const Galeri = () => {
      SUBMIT
   ===================== */
   const handleSubmit = async () => {
-    const url = isEdit
-      ? `http://localhost:5000/api/galeri/${editId}`
-      : "http://localhost:5000/api/galeri";
+  const url = isEdit
+    ? `http://localhost:5000/api/galeri/${editId}`
+    : "http://localhost:5000/api/galeri";
+  const method = isEdit ? "PUT" : "POST";
 
-    const method = isEdit ? "PUT" : "POST";
+  const formData = new FormData();
+  formData.append("judul", form.judul);
+  formData.append("deskripsi", form.deskripsi);
+  if (fileGambar) {
+    formData.append("file_gambar", fileGambar); // upload file
+  }
 
-    await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+  await fetch(url, {
+    method,
+    body: formData, // pakai FormData
+  });
 
-    setShowModal(false);
-    setIsEdit(false);
-    setForm({ judul: "", deskripsi: "", file_gambar: "" });
-    fetchGaleri();
-  };
+  setShowModal(false);
+  setIsEdit(false);
+  setEditId(null);
+  setFileGambar(null);
+  setPreview(null);
+  setForm({ judul: "", deskripsi: "", file_gambar: "" });
+
+  fetchGaleri();
+};
 
   if (loading) {
     return (
@@ -164,7 +175,7 @@ const Galeri = () => {
                       <td className="p-4">
                         <div className="relative group">
                           <img
-                            src={item.file_gambar}
+                            src={`http://localhost:5000/images/galeri/${item.file_gambar}`}
                             alt={item.judul}
                             className="w-32 h-24 object-cover rounded-xl shadow-md group-hover:shadow-xl transition-shadow"
                             onError={(e) => { e.target.src = "/images/no-image.png"; }}
@@ -183,11 +194,18 @@ const Galeri = () => {
                         <div className="flex justify-center gap-2">
                           <button
                             onClick={() => {
-                              setIsEdit(true);
-                              setEditId(item.id);
-                              setForm(item);
-                              setShowModal(true);
-                            }}
+    setIsEdit(true);
+    setEditId(item.id);
+    setForm({
+      judul: item.judul,
+      deskripsi: item.deskripsi,
+      file_gambar: item.file_gambar,
+    });
+
+    setFileGambar(null); // reset file baru
+    setPreview(item.file_gambar ? item.file_gambar : null); // preview dari server
+    setShowModal(true);
+  }}
                             className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 flex items-center gap-1"
                           >
                             <FaEdit className="w-4 h-4" /> Edit
@@ -243,14 +261,19 @@ const Galeri = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Path Gambar *</label>
-                <input
-                  className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#00BCD4] focus:ring-2 focus:ring-[#00BCD4]/20 transition-all outline-none"
-                  placeholder="/images/gallery/xxx.jpg atau URL gambar"
-                  value={form.file_gambar}
-                  onChange={(e) => setForm({ ...form, file_gambar: e.target.value })}
-                />
-              </div>
+  <label className="block text-sm font-bold text-gray-700 mb-2">Upload Gambar *</label>
+  <input
+    type="file"
+    accept="image/*"
+    className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[#EC008C] focus:ring-2 focus:ring-[#EC008C]/20 transition-all outline-none"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      setFileGambar(file); // simpan file
+      setPreview(URL.createObjectURL(file)); // buat preview langsung
+      setForm({ ...form, file_gambar: file.name }); // opsional, simpan nama file
+    }}
+  />
+</div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Deskripsi</label>
                 <textarea
@@ -262,26 +285,29 @@ const Galeri = () => {
                 />
               </div>
 
-              {form.file_gambar && (
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                  <p className="text-sm font-bold text-gray-700 mb-3">Preview Gambar:</p>
-                  <img
-                    src={form.file_gambar}
-                    alt="Preview"
-                    className="w-full h-64 object-cover rounded-xl"
-                    onError={(e) => { e.target.src = "/images/no-image.png"; }}
-                  />
-                </div>
-              )}
+              {preview && (
+  <div className="mt-4 bg-gray-50 rounded-xl p-4 border border-gray-200">
+    <p className="text-sm font-bold text-gray-700 mb-2">Preview Gambar:</p>
+    <img
+      src={preview}
+      alt="Preview"
+      className="w-full h-64 object-cover rounded-xl"
+      onError={(e) => { e.target.src = "/images/no-image.png"; }}
+    />
+  </div>
+)}
             </div>
 
             <div className="p-6 bg-gray-50 rounded-b-3xl border-t border-gray-100 flex justify-end gap-3">
               <button
-                onClick={() => setShowModal(false)}
-                className="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all duration-300"
-              >
-                Batal
-              </button>
+  onClick={() => {
+    setShowModal(false);
+    setFileGambar(null);
+    setPreview(null);
+  }}
+>
+  Batal
+</button>
               <button
                 onClick={handleSubmit}
                 className="bg-gradient-to-r from-[#EC008C] to-[#00BCD4] text-white px-6 py-3 rounded-xl font-bold hover:shadow-xl hover:scale-105 transition-all duration-300 shadow-lg flex items-center gap-2"

@@ -5,6 +5,7 @@ import {
   updateGaleri,
   deleteGaleri,
 } from "../controllers/galeriController.js";
+import upload from "../middlewares/upload.js"; // sama kayak partners
 
 const router = express.Router();
 
@@ -12,10 +13,10 @@ const router = express.Router();
 router.get("/", getAllGaleri);
 
 // CREATE
-router.post("/", createGaleri);
+router.post("/", upload.single("file_gambar"), createGaleri); // 🔥 upload file
 
 // UPDATE
-router.put("/:id", updateGaleri);
+router.put("/:id", upload.single("file_gambar"), updateGaleri); // 🔥 upload file
 
 // DELETE
 router.delete("/:id", deleteGaleri);
